@@ -20,6 +20,8 @@ git 自带了一个 `git config` 工具来帮助设置 git 外观和行为的配
 
 **若无法在对应目录找到配置文件，可执行 `git config --list --show-origin` 来查看每个配置变量所在文件。**
 
+> 注：[]中为可选项，下同。
+
 ### 用户配置
 
 安装完 git 后第一件事就是设置你的用户名和邮箱地址。因为每次 git 提交都会使用这些信息，并且会写入每次的提交中。
@@ -119,19 +121,25 @@ $ git init
 
 该命令会创建一个名为 `.git` 的子目录，这个子目录中含有初始化的 git 仓库中所有的必须文件。
 
+#### 总结
+
+- `git clone <url> [<local-project-name>]` 从远程服务器克隆仓库至本地目录名下。
+
+- `git init` 初始化本地仓库。
+
 ### 远程仓库使用
 
 #### 查看远程仓库
 
-在已跟踪远程仓库的本地仓库目录中执行 `git remote` 命令，会列出你指定的远程服务器的简写。
+在已跟踪远程仓库的本地仓库目录中执行 `git remote [show]` 命令，会列出你指定的远程服务器的简写。
 
 ```javascript
-$ git remote // 远程仓库服务器的默认名字即为origin
+$ git remote // 远程仓库服务器的默认名字即为origin 选项show可以省略
 
 origin
 ```
 
-指定选项 `-v` ，会显示需要读写远程仓库使用的 git 保存的简写及其对应的 url。
+指定选项 `-v` 或 `--verbose` ，会显示需要读写远程仓库使用的 git 保存的简写及其对应的 url。
 
 ```javascript
 $ git remote -v
@@ -142,7 +150,7 @@ origin  git@github.com:xiamu33/blog.git (push)
 
 #### 添加远程仓库
 
-执行 `git remote add <shortname> <url>` 添加一个新的远程 git 仓库。
+执行 `git remote add <short-name> <url>` 添加一个新的远程 git 仓库。
 
 ```javascript
 $ git remote
@@ -181,7 +189,7 @@ origin
 
 #### 从远程仓库抓取与拉取
 
-执行`git fetch <remote-name>` 可从远程仓库中获得数据。
+执行`git fetch [<remote-name>]` 可从远程仓库中获得数据。
 
 `git fetch` 命令会将数据抓取到你的本地仓库，但不会自动合并或修改你当前的工作。你必须手动将其合并入你的工作。
 
@@ -223,10 +231,87 @@ remote:
 To https://github.com/xiamu33/blog.git
  * [new branch]      dev -> dev
 
-$ git branch -r // 查看远程分支
+$ git branch -r // 查看远程分支 同git branch --remotes
 https/dev
 https/master
 origin/master
 ```
 
 如果你的本地分支已跟踪一个远程分支，可省略后面的选项执行 `git push` 推送至远程仓库。
+
+#### 总结
+
+- `git remote [show]` 查看远程仓库的简写。
+
+- `git remote -v` 查看远程仓库的简写及其对应的 url。
+
+- `git remote add <short-name> <url>` 添加远程仓库。
+
+- `git remote rename <old-name> <new-name>` 重命名远程仓库（也会修改远程分支的名字）。
+
+- `git remote rm <remote-name>` 删除远程仓库。
+
+- `git fetch [<remote-name>]` 从远程仓库抓取数据（不会合并入本地工作）。
+
+- `git pull [<remote-name> <remote-branch-name>[:<local-branch-name>]]` 拉取指定远程分支数据至指定（或同名）本地分支，省略所有选项则拉取已跟踪远程分支数据。
+
+- `git branch --set-upstream-to=<remote-name>/<branch-name>` 让本地分支跟踪远程分支。
+
+- `git push [<remote-name> <local-branch-name>[:<remote-branch-name>]]` 推送至远程仓库。
+
+- `git branch -r` 查看远程分支。
+
+### 记录每次更新
+
+git 文件的生命周期如下图：
+
+![lifecycle](../img/lifecycle.png)
+
+#### 查看当前文件状态
+
+执行`git status` 可查看当前文件的详细状态。
+
+```javascript
+$ git status
+
+On branch master
+Your branch is ahead of 'origin/master' by 1 commit.
+  (use "git push" to publish your local commits)
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+       modified:   .markdownlint.json
+       modified:   article/git常用命令详解.md
+       new file:   img/lifecycle.png
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+       modified:   README.md
+       modified:   article/git常用命令详解.md
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+       .gitignore
+```
+
+执行`git status -s` 或 `git status --short` 将输出更为紧凑的状态信息。
+
+```javascript
+$ git status -s
+
+M  .markdownlint.json
+ M README.md
+MM article/git常用命令详解.md
+A  img/lifecycle.png
+?? .gitignore
+```
+
+- `??` 标记：新添加的未跟踪的文件。
+
+- `A` 标记：新添加到暂存区中的文件。
+
+- `M` 标记：修改过的文件。出现在右表示该文件被修改了但未放入暂存区；出现在左表示该文件被修改了并且放入了暂存区；左右都出现表示该文件被修改了，一部分修改已被放入暂存区，另一部分还没有。
