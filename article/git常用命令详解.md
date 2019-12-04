@@ -315,3 +315,91 @@ A  img/lifecycle.png
 - `A` 标记：新添加到暂存区中的文件。
 
 - `M` 标记：修改过的文件。出现在右表示该文件被修改了但未放入暂存区；出现在左表示该文件被修改了并且放入了暂存区；左右都出现表示该文件被修改了，一部分修改已被放入暂存区，另一部分还没有。
+
+- `D` 标记：已删除的文件。
+
+#### 跟踪暂存文件
+
+执行 `git add <file-name>` 跟踪一个新文件。
+
+```javascript
+$ git add README.md
+```
+
+这将会跟踪 `README.md` 文件，并暂存至暂存区。
+
+`git add` 如果使用目录的路径作为参数，该命令将递归地跟踪该目录下的所有文件。如：`git add .` 会跟踪并暂存当前目录层级下所有文件（被忽略的文件除外）。
+
+#### 查看修改
+
+通过 `git status` 我们可以查看当前哪些更新文件还没有暂存，哪些文件已经暂存准备下次提交，但只限文件名。
+
+知道具体修改了什么地方，可以执行 `git diff` 命令，该命令将通过文件补丁的格式显示具体哪些行发生了改变。
+
+编辑的文件不暂存，执行 `git status` 命令会看到：
+
+```javascript
+$ git status
+
+On branch master
+Your branch is up to date with 'origin/master'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+       modified:   README.md
+
+no changes added to commit (use "git add" and/or "git commit -a")
+```
+
+想要查看尚未暂存的文件更新了哪些部分，不加参数直接输入 `git diff` ：
+
+```javascript
+$ git diff
+
+diff --git a/README.md b/README.md
+index a093180..cba457d 100644
+--- a/README.md
++++ b/README.md
+@@ -5,3 +5,5 @@
+ ## git 相关
++
++- [git 常用命令详解](./article/git常用命令详解.md)
+```
+
+该命令比较的是工作目录中当前文件和暂存区域快照之间的差异， 也就是修改之后还没有暂存起来的变化内容。
+
+若要查看已暂存的将要添加到下次提交的更改，可以执行 `git diff --cached` 命令（或者 git >= 1.6.1 版本所提供的 `git diff --staged` ）。
+
+**需要注意的是，`git diff` 本身只显示已跟踪文件中尚未暂存的改动，而不是自上次提交以来所做的所有改动。**
+
+> `git difftool` 命令可以将文件差异通过图形化的方式输出结果，使用文件名或目录路径作为参数，可以查看指定文件的改动。执行 `git difftool --tool-help` 命令查看你的系统支持哪些 Git Diff 插件。
+
+#### 提交更新
+
+#### 忽略文件
+
+一般我们总有些文件不想纳入 git 管理，也不希望它们总出现在未跟踪文件列表。比如日志文件，或者编译过程中创建的临时文件等。在这种情况下，我们可以创建一个名为 `.gitignore` 的文件，列出要忽略的文件模式。
+
+文件 `.gitignore` 的格式规范如下：
+
+- 所有空行或者以`＃`开头的行都会被 Git 忽略。
+
+- 可以使用标准的 glob 模式匹配。
+
+- 匹配模式可以以（`/`）开头防止递归。
+
+- 匹配模式可以以（`/`）结尾指定目录。
+
+  - 要忽略指定模式以外的文件或目录，可以在模式前加上惊叹号（`!`）取反。
+
+所谓的 glob 模式是指 shell 所使用的简化了的正则表达式。
+
+`*` 匹配零个或多个任意字符；
+
+`[abc]` 匹配任何一个列在方括号中的字符（这个例子要么匹配一个 a，要么匹配一个 b，要么匹配一个 c）。如果在方括号中使用短划线分隔两个字符，表示所有在这两个字符范围内的都可以匹配（比如`[0-9]`表示匹配所有 0 到 9 的数字）。
+
+`?` 只匹配一个任意字符；
+
+`**` 表示匹配任意中间目录，比如`a/**/z`可以匹配`a/z`,`a/b/z`或`a/b/c/z`等。
