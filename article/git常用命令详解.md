@@ -378,6 +378,64 @@ index a093180..cba457d 100644
 
 #### 提交更新
 
+当所有修改的文件都 `git add` 到暂存区准备提交后，就可以执行 `git commit` 命令。
+
+不加任何参数执行 `git commit` 命令会启动文本编辑器以便输入本次提交的说明，一般都是 vim 或 emacs。也可以执行 `git config --global core.editor` 命令设定编辑软件。
+
+```javascript
+$ git commit
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# On branch master
+# Your branch is up to date with 'origin/master'.
+#
+# Changes to be committed:
+#       modified:   article/git常用命令详解.md
+#
+~
+~
+"~/Documents/blog/.git/COMMIT_EDITMSG" 13L, 367C
+```
+
+默认的提交消息有一段注释，并包含最后一次执行 `git status` 的输出。如果想要知道更详细的修改提示，可以使用 `-v` 选项。输入完提交说明退出编辑器时，git 会丢掉注释行，用你输入的提交信息生成一次提交。
+
+另外，可以使用 `-m` 选项，后面加上提交说明，可以直接生成一次提交。
+
+```javascript
+$ git commit -m "add git: 基础用法更新"
+
+[master 2f2a8fa] add git: 基础用法更新
+ 1 file changed, 88 insertions(+)
+```
+
+现在已经成功创建一个提交。提交后的输出会告诉你，当前是在哪个分支提交的（`master`），本次提交的部分 SHA-1 校验和是什么（`2f2a8fa`），本次提交有多少文件修订过，多少行添加和删改过。
+
+请记住，提交时记录的是放在暂存区域的快照。 任何还未暂存的仍然保持已修改状态，可以在下次提交时纳入版本管理。 每一次运行提交操作，都是对你项目作一次快照，以后可以回到这个状态，或者进行比较。
+
+##### 跳过使用暂存区域
+
+尽管使用暂存区域的方式可以精心准备要暂存的细节，但每次都这么操作也略显繁琐。git 提供了一个跳过使用暂存区域的方式，就是在 `git commit` 后面加上 `-a` 选项（需在 `-m` 之前），这样 git 就会自动把修改中已经跟踪过的文件暂存起来一并提交，跳过手动 `git add` 步骤。
+
+```javascript
+$ git status
+On branch master
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+        modified:   README.md
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+$ git commit -a -m "modify README"
+[master 1d5ef89] modify README
+ 1 file changed, 2 insertions(+)
+```
+
+需要注意的是，新添加的文件（即之前未跟踪的文件）并不会被自动暂存起来，仍需要手动 `git add` 。觉得繁琐可以通过设置 git 别名快速提交，git 别名会在后面详细提到。
+
 #### 忽略文件
 
 一般我们总有些文件不想纳入 git 管理，也不希望它们总出现在未跟踪文件列表。比如日志文件，或者编译过程中创建的临时文件等。在这种情况下，我们可以创建一个名为 `.gitignore` 的文件，列出要忽略的文件模式。
@@ -403,3 +461,117 @@ index a093180..cba457d 100644
 `?` 只匹配一个任意字符；
 
 `**` 表示匹配任意中间目录，比如`a/**/z`可以匹配`a/z`,`a/b/z`或`a/b/c/z`等。
+
+如果有一个文件你不想忽略却意外被 git 忽略了，这时可以执行 `git check-ignore` 命令检查被那条规则忽略了。选项 `-v` 可以输出匹配模式的详细信息。
+
+```javascript
+$ git check-ignore -v .DS_Store
+
+.gitignore:1:.DS_Store  .DS_Store
+```
+
+该输出说明 `.DS_Store` 文件是被 `.gitignore` 文件中第一行的 `.DS_Store` 规则忽略的。
+
+#### 移除/移动文件
+
+##### 移除文件
+
+如果要从 git 中移除某个文件，就必须要从已跟踪文件清单中移除（确切地说，是从暂存区域移除），然后提交。可以执行 `git rm` 命令完成此项工作，并连带从工作目录中删除指定的文件，这样以后就不会出现在未跟踪文件清单中了。
+
+但是如果只是单纯的从工作目录中删除文件，执行 `git status` 时会显示“Changes not staged for commit”（未暂存）。
+
+```javascript
+$ rm README.md
+$ git status
+
+On branch master
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+        deleted:    README.md
+
+no changes added to commit (use "git add" and/or "git commit -a")
+```
+
+这时候需要运行 `git rm` 或者 `git add` 操作记录移除文件操作。
+
+```javascript
+$ git rm README.md
+rm 'README.md'
+
+$ git status
+On branch master
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+        deleted:    README.md
+```
+
+下一次提交时，该文件就不再纳入版本管理了。如果删除之前修改过并且已经放到暂存区域的话，想要强制删除则必须要用强制删除选项 `-f` 了，但是这样没有添加到快照中的数据无法被 git 恢复。
+
+##### 仅从暂存区移除
+
+当你想把文件从 git 仓库中删除（即让 git 取消跟踪），但是仍要保留在当前目录中。比如在忘记添加 `.gitignore` 文件时，将一堆日志文件添加到了暂存区，这时候可以使用 `--cached` 选项。
+
+```javascript
+$ git rm --cached README.md
+```
+
+`git rm` 命令后面可以列出文件或者目录的名字，也可以使用`glob`模式：
+
+```javascript
+$ git rm log/\*.log
+$ git rm --cached log/\*.log
+```
+
+注意星号 `*` 前的 `\` 符号， 因为 git 有自己的文件模式扩展匹配方式，所以不需要用 shell 来帮忙展开（当然不加 `\` 符号也是可以的），此命令删除 `log/` 目录下所有扩展名为 `.log` 的文件以及取消 git 对`log/` 目录下所有扩展名为 `.log` 的文件的跟踪。
+
+##### 移动/重命名文件
+
+在 git 中移动和重命名文件操作是一致的。可以执行：
+
+```javascript
+$ git mv <file-from> <file-to>
+```
+
+git 会如预期般正常工作，认为这是一次重命名操作。
+
+```javascript
+$ git mv README.md ./article/README
+
+$ git status
+On branch master
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+        renamed:    README.md -> article/README
+```
+
+实际上，执行 `git mv README.md ./article/README` 相当于执行了三条命令：
+
+```javascript
+$ mv README.md ./article/README
+$ git rm README.md
+$ git add ./article/README
+```
+
+#### 总结
+
+- `git status` 查看当前文件详细状态； `git status -s` 查看简要状态。
+
+- `git add <file-name>` 跟踪暂存文件； `git add .` 跟踪并暂存当前目录层级下所有文件（被忽略的文件除外）。
+
+- `git diff` 查看工作目录文件相对暂存去的修改； `git diff --cached` 或者 `git diff --staged` 查看暂存区文件相对上次提交的修改。
+
+- `git commit` 将暂存区文件提交更新； `git commit -a -m <your-commit>` 跳过使用暂存区提交已跟踪的文件。
+
+- `.gitignore` 忽略文件配置文件。
+
+- `git check-ignore -v <file-name>` 检查文件被哪条规则忽略。
+
+- `git rm <file-name>` 移除文件（磁盘和暂存区）。
+
+- `git rm --cached <file-name>` 仅从暂存区移除。
+
+- `git mv <file-from> <file-to>` 移动/重命名文件。
