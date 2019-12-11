@@ -156,13 +156,13 @@ origin  git@github.com:xiamu33/blog.git (push)
 $ git remote
 origin
 
-$ git remote add repos https://github.com/xiamu33/blog.git
+$ git remote add repo https://github.com/xiamu33/blog.git
 
 $ git remote -v
 origin  git@github.com:xiamu33/blog.git (fetch)
 origin  git@github.com:xiamu33/blog.git (push)
-repos   https://github.com/xiamu33/blog.git (fetch)
-repos   https://github.com/xiamu33/blog.git (push)
+repo   https://github.com/xiamu33/blog.git (fetch)
+repo   https://github.com/xiamu33/blog.git (push)
 ```
 
 #### 重命名与删除远程仓库
@@ -170,14 +170,14 @@ repos   https://github.com/xiamu33/blog.git (push)
 执行 `git remote rename <old-name> <new-name>` 可修改一个远程仓库的简写名。
 
 ```javascript
-$ git remote rename repos https
+$ git remote rename repo https
 
 $ git remote
 origin
 https
 ```
 
-值得注意的是，这样也会修改远程分支的名字，原来跟踪 `repos/master` 的分支现在会跟踪 `https/master` 。
+值得注意的是，这样也会修改远程分支的名字，原来跟踪 `repo/master` 的分支现在会跟踪 `https/master` 。
 
 执行`git remote rm <remote-name>` 可删除一个远程仓库。
 
@@ -265,7 +265,7 @@ origin/master
 
 git 文件的生命周期如下图：
 
-![lifecycle](../img/lifecycle.png)
+![lifecycle](./img/lifecycle.png)
 
 #### 查看当前文件状态
 
