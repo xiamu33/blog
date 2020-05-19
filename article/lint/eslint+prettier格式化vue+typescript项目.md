@@ -56,7 +56,7 @@ vue cli3 在初始化时一共提供了五个 lint 选项：
 
 ```javascript
 {
-    // ... other conifg
+    // ... other config
     "eslint.validate": [
         "javascript",
         "javascriptreact",
@@ -71,7 +71,7 @@ vue cli3 在初始化时一共提供了五个 lint 选项：
 
 ```javascript
 {
-    // ... other conifg
+    // ... other config
     "eslint.validate": [
         "javascript",
         "javascriptreact",
@@ -114,7 +114,7 @@ prettier 一直都以”武断“著称，其提供的配置也是少得可怜�
 虽然可以像这样在 eslint 的 `rules` 中配置忽略部分 prettier 的功能：
 
 ```javascript
-// ... other conifg
+// ... other config
 rules: {
     // ... other rules
     "prettier/prettier": {
