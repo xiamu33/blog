@@ -2,6 +2,6 @@
 
 ---
 
-## git 相关
+## Git 相关
 
-- [git 常用命令详解](./article/git常用命令详解.md)
+- [Git 常用命令汇总](./article/git/Git常用命令汇总.md)
