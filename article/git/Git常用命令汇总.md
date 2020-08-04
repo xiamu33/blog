@@ -58,6 +58,8 @@
 
 - `git reset [--mixed] <commit-hash> [<file-path>]` 重置提交树/文件。可用选项：
 
+  <details>
+
   - `--soft` 仅移动 HEAD 指针指向的分支提交，且更改会保留在暂存区，相当于撤销了上一次 `git commit` 命令。
 
   - `--mixed` （默认选项），不仅会撤销上次提交，还会取消暂存所有更改，相当于回滚到了所有 `git add` 和 `git commit` 命令执行之前。
@@ -65,6 +67,8 @@
   - `--hard` （**危险操作**），该命令会撤销提交、`git add` 、 `git commit` 的所有工作并强制覆盖工作区的文件，若被覆盖的文件未提交过则无法恢复。
 
   - 使用文件路径：如运行 `git reset file.txt` （相当于 `git reset --mixed HEAD file.txt` ），本质上只是将 `file.txt` 从 HEAD 复制到索引（暂存区）中。它还有**取消暂存文件**的实际效果，与 `git add` 的行为正好相反。我们也可以不让 Git 从 HEAD 拉取数据，而是通过具体指定一个提交来拉取该文件的对应版本（如 `git reset eb43bf file.txt` 这样的命令）。
+
+  </details>
 
 - `git checkout -- <file-path>` （**危险操作**） Git 会丢弃你在本地对该文件的任何修改，并且用最近提交的版本覆盖掉它。
 
@@ -94,16 +98,38 @@
 
 - `--color` 使用颜色（可在自定义提交记录中设置）。
 
+  <details>
+  <summary>参数选项</summary>
+
+  - `always` 一直可使用颜色。
+
+  - `auto` 如果输出到终端，则使用颜色。
+
+  - `never` 不使用颜色。
+  </details>
+
 - `--date` 设置日期格式。
 
+  <details>
+  <summary>参数选项</summary>
+
   - `iso` 以 ISO 8601 格式显示时间戳。
+
   - `local` 以本地时区显示时间戳。
+
   - `raw` 以 Git 内置格式显示时间戳（`%s %z`）。
+
   - `relative` 以相对时间显示（距今多长时间）。
+
   - `rfc` 以 RFC 2822 格式显示时间戳。
+
   - `short` 只显示日期。
+  </details>
 
 - `--pretty` 使用其他格式显示历史提交信息。可用选项：
+
+  <details>
+  <summary>参数选项</summary>
 
   - `oneline` 将每个提交放在一行显示。
 
@@ -134,6 +160,7 @@
       |     `%n`      |                      换行                       |
 
     - > 其中作者指的是实际作出修改的人，提交者指的是最后将此工作成果提交到仓库的人。如：当你为某个项目发布补丁，然后某个核心成员将你的补丁并入项目时，你就是作者，而那个核心成员就是提交者。
+    </details>
 
 - `--oneline` `--pretty=oneline --abbrev-commit`的简写。
 
