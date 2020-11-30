@@ -27,14 +27,14 @@ docker rmi hello-world
 ## 从镜像创建容器
 
 ```shell
-~$ docker run -i -t ubuntu:latest /bin/bash
+~$ docker run -t -i ubuntu:latest /bin/bash
 root@2069543a26b6:/#
 ```
 
 参数说明：
 
-- `-i`: 交互式操作。
-- `-t`: 终端。
+- `-t`: 让Docker分配一个伪终端（pseudo-tty）并绑定到容器的标准输入上。
+- `-i`: 让容器的标准输入保持打开。
 - `ubuntu:latest`: 这是指用 ubuntu 最新版本镜像为基础来启动容器。
 - `/bin/bash`: 放在镜像名后的是命令，这里我们希望有个交互式 Shell，因此用的是 /bin/bash。
 
