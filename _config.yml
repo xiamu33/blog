@@ -8,7 +8,7 @@ subtitle: ''
 description: ''
 keywords:
 author: xiamu33
-language: en
+language: zh-CN
 timezone: 'Asia/Shanghai'
 
 # URL
@@ -44,14 +44,14 @@ post_asset_folder: false
 relative_link: false
 future: true
 highlight:
-  enable: true
+  enable: false
   line_number: true
   auto_detect: false
   tab_replace: ''
   wrap: true
   hljs: false
 prismjs:
-  enable: false
+  enable: true
   preprocess: true
   line_number: true
   tab_replace: ''
@@ -62,7 +62,7 @@ prismjs:
 # order_by: Posts order. (Order by date descending by default)
 index_generator:
   path: ''
-  per_page: 10
+  per_page: 12
   order_by: -date
 
 # Category & Tag
@@ -85,19 +85,19 @@ updated_option: 'mtime'
 
 # Pagination
 ## Set per_page to 0 to disable pagination
-per_page: 10
+per_page: 12
 pagination_dir: page
 
 # Include / Exclude file(s)
 ## include:/exclude: options only apply to the 'source/' folder
 # include:
 # exclude:
-ignore:
+# ignore:
 
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: landscape
+theme: hexo-theme-matery
 
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
