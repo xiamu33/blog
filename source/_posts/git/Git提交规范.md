@@ -1,4 +1,9 @@
-# 使用 commitizen 规范 git 提交
+---
+title: 使用 commitizen 规范 git 提交
+date: 2020-12-04 00:57:47
+tags: git
+categories: Git
+---
 
 ## 为什么要规范 git 提交
 

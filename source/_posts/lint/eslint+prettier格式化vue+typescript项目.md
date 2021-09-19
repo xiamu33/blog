@@ -1,4 +1,11 @@
-# 记 eslint+prettier 格式化 vue+typescript 项目的踩坑经历
+---
+title: 记 eslint+prettier 格式化 vue+typescript 项目的踩坑经历
+date: 2019-12-11 23:13:00
+tags:
+  - eslint
+  - vue
+categories:
+---
 
 - 项目：vue+typescript+eslint+prettier
 
