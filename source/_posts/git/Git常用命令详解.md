@@ -270,7 +270,7 @@ origin/master
 
 git 文件的生命周期如下图：
 
-![lifecycle](./img/lifecycle.png)
+![git 生命周期](https://gitee.com/xiamu33/img/raw/master/img/2021/10/07/git-lifecycle.png)
 
 #### 查看当前文件状态
 

@@ -53,7 +53,7 @@ vue cli3 在初始化时一共提供了五个 lint 选项：
 
 并且当我 F1 执行 `ESlint: Fix all auto-fixable Problems` 的时候，vscode 给出了这样的警告：
 
-![eslint-validate-error](./img/eslint-prettier-1.png)
+![eslint 插件警告](https://gitee.com/xiamu33/img/raw/master/img/2021/10/07/eslint-prettier-1.png)
 
 问题在于 `settings.json` 中没有对 vue 文件及 ts 文件开启 eslint 验证，接下来只要设置好配置文件就行了。
 
@@ -106,11 +106,11 @@ vue cli3 在初始化时一共提供了五个 lint 选项：
 
 对于相同的代码，部分 eslint 与 prettier 规则验证会同时生效，导致重复格式化，比如：
 
-![eslint-prettier-lint-effect](./img/eslint-prettier-2.png)
+![eslint 与 prettier 验证同时生效](https://gitee.com/xiamu33/img/raw/master/img/2021/10/07/eslint-prettier-2.png)
 
 cmd+S 保存之后：
 
-![after-eslint-prettier-lint](./img/eslint-prettier-3.png)
+![eslint 与 prettier 格式化后](https://gitee.com/xiamu33/img/raw/master/img/2021/10/07/eslint-prettier-3.png)
 
 因为 eslint 和 prettier 的格式化功能同时生效了。这个时候就需要再次保存，把多余的空格删除。遇到其他复杂情况甚至需要多次保存。
 
@@ -132,7 +132,7 @@ rules: {
 
 但是其结果会导致类似这样的情况无法被格式化：
 
-![eslint-prettier-unlint](./img/eslint-prettier-4.png)
+![eslint 与 prettier 部分未格式化](https://gitee.com/xiamu33/img/raw/master/img/2021/10/07/eslint-prettier-4.png)
 
 所以可取的方法只有忽略 eslint 中与 prettier 功能相同的规则。
 
